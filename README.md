@@ -6,11 +6,41 @@ This repository contains detailed comparative analyses of various algorithms. It
 
 2- Single Pattern Matching Algorithms - An evaluation of Brute-Force, Sunday, KMP, FSM, Rabin-Karp, and Gusfield Z algorithms for finding a specific pattern within a larger text.
 
-Repository Structure
-Spell_Checker_Algorithms_Comparison.pdf
+3- Sorting Algorithms Comparison - Benchmark of QuickSort, MergeSort, and HeapSort with performance visualization.
+4- Pathfinding Visualization - Interactive CLI visualizer for Dijkstra and A* algorithms.
+
+![Solved 50+ LeetCode Problems](https://img.shields.io/badge/Solved-50%2B%20LeetCode%20Problems-orange?style=for-the-badge&logo=leetcode)
+
+## Repository Structure
+
+### [Sorting_Algorithms_Comparison/](Sorting_Algorithms_Comparison/)
+Contains implementations of various sorting algorithms and a benchmarking tool.
+- **Algorithms**: QuickSort, MergeSort, HeapSort, std::sort
+- **Benchmark**: Compares execution time for N=10k and N=100k elements.
+
+![Sorting Benchmark Results](sorting_benchmark_results.svg)
+
+### [Pathfinding_Visualization/](Pathfinding_Visualization/)
+A CLI-based visualization of pathfinding algorithms on a grid map.
+- **Algorithms**: Dijkstra, A*
+- **Features**: ASCII visualization of the search process and final path.
+
+```
+####################
+#S                 #
+#*  #########      #
+#*  #       #      #
+#***#   E   #      #
+#  *#   *   #      #
+#  *####*####      #
+#  ******          #
+####################
+```
+
+### [Spell_Checker_Algorithms_Comparison](Spell_Checker_Algorithms_Comparison/)
 Contains the study comparing the efficiency of different spell checker algorithms based on build time and check time.
 
-Pattern_Matching_Algorithms_Comparison.pdf
+### [Pattern_Matching_Algorithms_Comparison](Pattern_Matching_Algorithms_Comparison/)
 Presents the analysis of various single pattern matching algorithms, focusing on their performance with both short and long patterns.
 
 Methodology
@@ -23,10 +53,16 @@ Spell Checker Algorithms:
 -Hash Map has the fastest build time.
 -Linear List, while simple, is less efficient overall.
 
-Pattern Matching Algorithms:
--The Sunday algorithm is the most efficient for both short and long patterns.
--The FSM algorithm is the least efficient.
--Rabin-Karp performs well, especially for longer patterns.
+### Pattern Matching Algorithms:
+- The Sunday algorithm is the most efficient for both short and long patterns.
+- The FSM algorithm is the least efficient.
+- Rabin-Karp performs well, especially for longer patterns.
+
+### Sorting Algorithms:
+- **std::sort** (IntroSort) consistently outperforms custom implementations due to deep optimizations.
+- **QuickSort** is the fastest among the custom implementations.
+- **MergeSort** is stable but slower due to memory allocations.
+- **HeapSort** is slower than QuickSort but provides O(N log N) worst-case guarantee.
 
 Conclusion
 These studies offer valuable insights for developers and researchers interested in algorithm efficiency, particularly in the context of spell checking and pattern matching. The results can guide the selection of algorithms based on specific use cases.

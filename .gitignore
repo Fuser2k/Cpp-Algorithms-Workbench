@@ -30,3 +30,14 @@
 *.exe
 *.out
 *.app
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+
+# Binaries created by this project
+Sorting_Algorithms_Comparison/sorting_benchmark
+Pathfinding_Visualization/pathfinder

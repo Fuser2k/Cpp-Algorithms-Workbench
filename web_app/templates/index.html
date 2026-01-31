@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algorithm Dashboard</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --accent-color: #3b82f6;
+            --secondary-accent: #10b981;
+            --code-bg: #000000;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeIn Down 1s ease-out;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, var(--accent-color), var(--secondary-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p.subtitle {
+            color: #94a3b8;
+            font-size: 1.2rem;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: var(--accent-color);
+        }
+
+        h2 {
+            margin-top: 0;
+            font-size: 1.5rem;
+            color: var(--text-color);
+        }
+
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent-color), var(--secondary-accent));
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: opacity 0.2s;
+            width: 100%;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            color: #d1d5db;
+            min-height: 200px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Algorithm Visualizer</h1>
+            <p class="subtitle">High-Performance C++ Algorithms Dashboard</p>
+        </header>
+
+        <div class="dashboard-grid">
+            <div class="card">
+                <h2>Sorting Benchmarks</h2>
+                <button class="btn" onclick="runSorting()">Run Benchmarks (10k & 100k)</button>
+                <p style="color: #94a3b8; font-size: 0.9rem;">Compares QuickSort, MergeSort, HeapSort</p>
+                <div id="sorting-result">
+                    <pre>Click 'Run' to see results...</pre>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Pathfinding Visualization</h2>
+                <button class="btn" onclick="runPathfinding()">Run Pathfinder</button>
+                <p style="color: #94a3b8; font-size: 0.9rem;">Visualizes Dijkstra vs A* on ASCII Grid</p>
+                <div id="pathfinding-result">
+                    <pre>Click 'Run' to see results...</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function runSorting() {
+            const display = document.querySelector('#sorting-result pre');
+            display.textContent = 'Running benchmarks... (this may take a moment)';
+            try {
+                const response = await fetch('/run/sorting');
+                const data = await response.json();
+                display.textContent = data.output;
+            } catch (e) {
+                display.textContent = 'Error: ' + e;
+            }
+        }
+
+        async function runPathfinding() {
+            const display = document.querySelector('#pathfinding-result pre');
+            display.textContent = 'Running pathfinder...';
+            try {
+                const response = await fetch('/run/pathfinding');
+                const data = await response.json();
+                display.textContent = data.output;
+            } catch (e) {
+                display.textContent = 'Error: ' + e;
+            }
+        }
+    </script>
+</body>
+</html>
