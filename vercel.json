@@ -1,0 +1,23 @@
+{
+    "version": 2,
+    "builds": [
+        {
+            "src": "web_app/app.py",
+            "use": "@vercel/python",
+            "config": {
+                "maxDuration": 10,
+                "includeFiles": [
+                    "Sorting_Algorithms_Comparison/sorting_benchmark",
+                    "Pathfinding_Visualization/pathfinder",
+                    "web_app/templates/**"
+                ]
+            }
+        }
+    ],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "/web_app/app.py"
+        }
+    ]
+}
