@@ -9,6 +9,7 @@ echo "Checking GCC version..."
 g++ --version
 
 # Create bin directory
+rm -rf bin
 mkdir -p bin
 
 # Compile C++ binaries
