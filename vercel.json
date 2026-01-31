@@ -7,8 +7,8 @@
             "config": {
                 "maxDuration": 10,
                 "includeFiles": [
-                    "web_app/bin/**",
-                    "web_app/templates/**"
+                    "bin/**",
+                    "templates/**"
                 ]
             }
         }
