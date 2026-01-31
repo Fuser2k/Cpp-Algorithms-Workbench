@@ -2,6 +2,8 @@
 set -e
 
 echo "Starting Vercel Build..."
+echo "Current directory: $(pwd)"
+ls -la
 
 # Install C++ dependencies (not needed since gcc is usually present, but just in case)
 # Vercel uses Amazon Linux 2 usually.

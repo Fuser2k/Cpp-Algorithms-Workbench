@@ -6,9 +6,9 @@
             "use": "@vercel/python",
             "config": {
                 "maxDuration": 10,
-                "installCommand": "bash vercel_build.sh",
+                "installCommand": "bash vercel_build.sh && cp -r bin web_app/",
                 "includeFiles": [
-                    "bin/**",
+                    "web_app/bin/**",
                     "web_app/templates/**"
                 ]
             }
