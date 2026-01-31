@@ -5,8 +5,8 @@ import os
 app = Flask(__name__)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-SORTING_BIN = os.path.join(BASE_DIR, '../Sorting_Algorithms_Comparison/sorting_benchmark')
-PATHFINDING_BIN = os.path.join(BASE_DIR, '../Pathfinding_Visualization/pathfinder')
+SORTING_BIN = os.path.join(BASE_DIR, 'bin', 'sorting_benchmark')
+PATHFINDING_BIN = os.path.join(BASE_DIR, 'bin', 'pathfinder')
 
 @app.route('/')
 def index():

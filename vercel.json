@@ -7,8 +7,7 @@
             "config": {
                 "maxDuration": 10,
                 "includeFiles": [
-                    "Sorting_Algorithms_Comparison/sorting_benchmark",
-                    "Pathfinding_Visualization/pathfinder",
+                    "web_app/bin/**",
                     "web_app/templates/**"
                 ]
             }

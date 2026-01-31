@@ -9,9 +9,10 @@ pip install -r web_app/requirements.txt
 
 # Compile C++ binaries
 echo "Compiling Sorting Algorithms..."
-g++ -std=c++17 Sorting_Algorithms_Comparison/main.cpp Sorting_Algorithms_Comparison/SortingAlgorithms.cpp -o Sorting_Algorithms_Comparison/sorting_benchmark
+mkdir -p web_app/bin
+g++ -std=c++17 Sorting_Algorithms_Comparison/main.cpp Sorting_Algorithms_Comparison/SortingAlgorithms.cpp -o web_app/bin/sorting_benchmark
 
 echo "Compiling Pathfinding Visualization..."
-g++ -std=c++17 Pathfinding_Visualization/main.cpp Pathfinding_Visualization/Pathfinder.cpp -o Pathfinding_Visualization/pathfinder
+g++ -std=c++17 Pathfinding_Visualization/main.cpp Pathfinding_Visualization/Pathfinder.cpp -o web_app/bin/pathfinder
 
 echo "Build Completed Successfully."
