@@ -4,13 +4,23 @@ import os
 
 app = Flask(__name__)
 
-# Vercel-specific path adjustment
-# On Vercel, the lambda root is /var/task. Our app.py is in web_app/app.py.
-# So binaries at root/bin would be at /var/task/bin
-BASE_DIR = os.path.dirname(os.path.abspath(__file__)) # /var/task/web_app
-ROOT_DIR = os.path.dirname(BASE_DIR) # /var/task
-SORTING_BIN = os.path.join(ROOT_DIR, 'bin', 'sorting_benchmark')
-PATHFINDING_BIN = os.path.join(ROOT_DIR, 'bin', 'pathfinder')
+def find_binary(name):
+    # Search for binary in current directory and subdirectories
+    search_roots = [
+        os.path.dirname(os.path.abspath(__file__)), # /var/task/web_app
+        os.getcwd(), # /var/task
+        '/var/task'
+    ]
+    
+    for search_root in search_roots:
+        if not os.path.exists(search_root): continue
+        for root, dirs, files in os.walk(search_root):
+            if name in files:
+                return os.path.join(root, name)
+    return None
+
+SORTING_BIN_NAME = 'sorting_benchmark'
+PATHFINDING_BIN_NAME = 'pathfinder'
 
 @app.route('/')
 def index():
@@ -19,31 +29,28 @@ def index():
 @app.route('/debug')
 def debug_paths():
     files = []
-    # Walk through current directory
-    for root, dirs, filenames in os.walk(BASE_DIR):
+    # Walk through entire task directory
+    for root, dirs, filenames in os.walk('/var/task'):
         for filename in filenames:
             files.append(os.path.join(root, filename))
     
+    sorting_found = find_binary(SORTING_BIN_NAME)
+    
     return jsonify({
-        'base_dir': BASE_DIR,
-        'sorting_bin_path': SORTING_BIN,
-        'sorting_exists': os.path.exists(SORTING_BIN),
-        'all_files': files[:100]  # Limit output
+        'cwd': os.getcwd(),
+        'base_dir': os.path.dirname(os.path.abspath(__file__)),
+        'sorting_found_at': sorting_found,
+        'all_files': files[:200]
     })
 
 @app.route('/run/sorting')
 def run_sorting():
     try:
-        # Debug print
-        print(f"Checking for binary at: {SORTING_BIN}")
-        if not os.path.exists(SORTING_BIN):
-            # Fallback check
-            alt_path = os.path.join(os.getcwd(), 'web_app', 'bin', 'sorting_benchmark')
-            if os.path.exists(alt_path):
-                return jsonify({'output': f'Found at alt path: {alt_path}. Please update config.'})
-            return jsonify({'output': f'Error: Binary not found at {SORTING_BIN}. Base: {BASE_DIR}. CWD: {os.getcwd()}'})
+        bin_path = find_binary(SORTING_BIN_NAME)
+        if not bin_path:
+             return jsonify({'output': f'Error: Binary {SORTING_BIN_NAME} not found via recursive search in /var/task.'})
             
-        result = subprocess.run([SORTING_BIN], capture_output=True, text=True)
+        result = subprocess.run([bin_path], capture_output=True, text=True)
         return jsonify({'output': result.stdout})
     except Exception as e:
         return jsonify({'output': str(e)})
@@ -51,9 +58,10 @@ def run_sorting():
 @app.route('/run/pathfinding')
 def run_pathfinding():
     try:
-        if not os.path.exists(PATHFINDING_BIN):
-            return jsonify({'output': 'Error: Binary not found. Please compile first.'})
-        result = subprocess.run([PATHFINDING_BIN], capture_output=True, text=True)
+        bin_path = find_binary(PATHFINDING_BIN_NAME)
+        if not bin_path:
+             return jsonify({'output': f'Error: Binary {PATHFINDING_BIN_NAME} not found.'})
+        result = subprocess.run([bin_path], capture_output=True, text=True)
         return jsonify({'output': result.stdout})
     except Exception as e:
         return jsonify({'output': str(e)})
