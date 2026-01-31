@@ -8,7 +8,7 @@
                 "maxDuration": 10,
                 "includeFiles": [
                     "bin/**",
-                    "templates/**"
+                    "web_app/templates/**"
                 ]
             }
         }

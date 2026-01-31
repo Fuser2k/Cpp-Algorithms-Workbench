@@ -4,9 +4,13 @@ import os
 
 app = Flask(__name__)
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-SORTING_BIN = os.path.join(BASE_DIR, 'bin', 'sorting_benchmark')
-PATHFINDING_BIN = os.path.join(BASE_DIR, 'bin', 'pathfinder')
+# Vercel-specific path adjustment
+# On Vercel, the lambda root is /var/task. Our app.py is in web_app/app.py.
+# So binaries at root/bin would be at /var/task/bin
+BASE_DIR = os.path.dirname(os.path.abspath(__file__)) # /var/task/web_app
+ROOT_DIR = os.path.dirname(BASE_DIR) # /var/task
+SORTING_BIN = os.path.join(ROOT_DIR, 'bin', 'sorting_benchmark')
+PATHFINDING_BIN = os.path.join(ROOT_DIR, 'bin', 'pathfinder')
 
 @app.route('/')
 def index():
