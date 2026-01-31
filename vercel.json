@@ -6,6 +6,7 @@
             "use": "@vercel/python",
             "config": {
                 "maxDuration": 10,
+                "installCommand": "bash vercel_build.sh",
                 "includeFiles": [
                     "bin/**",
                     "web_app/templates/**"
