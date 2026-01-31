@@ -12,11 +12,33 @@ PATHFINDING_BIN = os.path.join(BASE_DIR, 'bin', 'pathfinder')
 def index():
     return render_template('index.html')
 
+@app.route('/debug')
+def debug_paths():
+    files = []
+    # Walk through current directory
+    for root, dirs, filenames in os.walk(BASE_DIR):
+        for filename in filenames:
+            files.append(os.path.join(root, filename))
+    
+    return jsonify({
+        'base_dir': BASE_DIR,
+        'sorting_bin_path': SORTING_BIN,
+        'sorting_exists': os.path.exists(SORTING_BIN),
+        'all_files': files[:100]  # Limit output
+    })
+
 @app.route('/run/sorting')
 def run_sorting():
     try:
+        # Debug print
+        print(f"Checking for binary at: {SORTING_BIN}")
         if not os.path.exists(SORTING_BIN):
-            return jsonify({'output': 'Error: Binary not found. Please compile first.'})
+            # Fallback check
+            alt_path = os.path.join(os.getcwd(), 'web_app', 'bin', 'sorting_benchmark')
+            if os.path.exists(alt_path):
+                return jsonify({'output': f'Found at alt path: {alt_path}. Please update config.'})
+            return jsonify({'output': f'Error: Binary not found at {SORTING_BIN}. Base: {BASE_DIR}. CWD: {os.getcwd()}'})
+            
         result = subprocess.run([SORTING_BIN], capture_output=True, text=True)
         return jsonify({'output': result.stdout})
     except Exception as e:
