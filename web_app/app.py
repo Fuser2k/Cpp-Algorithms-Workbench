@@ -47,13 +47,39 @@ def debug_paths():
 def run_sorting():
     try:
         bin_path = find_binary(SORTING_BIN_NAME)
-        if not bin_path:
-             return jsonify({'output': f'Error: Binary {SORTING_BIN_NAME} not found via recursive search in /var/task.'})
+        if bin_path:
+             result = subprocess.run([bin_path], capture_output=True, text=True)
+             if result.returncode == 0:
+                 return jsonify({'output': result.stdout})
+        
+        # Fallback to Python implementation if binary not found or failed
+        import time
+        import random
+        
+        def quick_sort(arr):
+            if len(arr) <= 1: return arr
+            pivot = arr[len(arr) // 2]
+            left = [x for x in arr if x < pivot]
+            middle = [x for x in arr if x == pivot]
+            right = [x for x in arr if x > pivot]
+            return quick_sort(left) + middle + quick_sort(right)
+
+        output = "⚠️ Binary not found, running Python fallback...\n\n"
+        sizes = [10000, 100000]
+        for N in sizes:
+            data = [random.randint(0, 100000) for _ in range(N)]
             
-        result = subprocess.run([bin_path], capture_output=True, text=True)
-        return jsonify({'output': result.stdout})
+            start = time.time()
+            quick_sort(data.copy())
+            duration = (time.time() - start) * 1000
+            
+            output += f"Dataset Size: {N}\n"
+            output += f"QuickSort: {duration:.4f} ms (Python fallback)\n"
+            output += "-" * 30 + "\n"
+            
+        return jsonify({'output': output})
     except Exception as e:
-        return jsonify({'output': str(e)})
+         return jsonify({'output': f"Error: {str(e)}"})
 
 @app.route('/run/pathfinding')
 def run_pathfinding():
