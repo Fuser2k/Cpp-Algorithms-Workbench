@@ -169,7 +169,8 @@ def run_pathfinding():
             output += line + "\n"
             
         if found:
-            output += f"\nPath found! Length: {len(path_taken)} steps."
+            total_cost = dists[end_node]
+            output += f"\nPath found! Length: {len(path_taken)} steps. Total Cost: {total_cost}"
         else:
             output += "\nNo path found."
             
