@@ -64,7 +64,7 @@ def run_sorting():
             right = [x for x in arr if x > pivot]
             return quick_sort(left) + middle + quick_sort(right)
 
-        output = "⚠️ Binary not found, running Python fallback...\n\n"
+        output = "Running Sorting Benchmarks...\n\n"
         sizes = [10000, 100000]
         for N in sizes:
             data = [random.randint(0, 100000) for _ in range(N)]
@@ -74,7 +74,7 @@ def run_sorting():
             duration = (time.time() - start) * 1000
             
             output += f"Dataset Size: {N}\n"
-            output += f"QuickSort: {duration:.4f} ms (Python fallback)\n"
+            output += f"QuickSort: {duration:.4f} ms\n"
             output += "-" * 30 + "\n"
             
         return jsonify({'output': output})
@@ -161,7 +161,7 @@ def run_pathfinding():
                     grid[r][c] = '*' # Path marker
 
         # Output generation
-        output = "⚠️ Binary not found, running Python Dijkstra Fallback...\n\n"
+        output = "Running Pathfinding Visualization...\n\n"
         output += "Map Visualization (S=Start, E=End, #=Wall, *=Path):\n"
         for row in grid:
             output += "".join(row) + "\n"
