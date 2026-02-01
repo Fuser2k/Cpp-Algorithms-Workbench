@@ -157,14 +157,16 @@ def run_pathfinding():
             
             # Mark path on grid
             for r, c in path_taken:
-                if grid[r][c] not in ('S', 'E'):
-                    grid[r][c] = '*' # Path marker
+                if (r, c) != start_node and (r, c) != end_node:
+                     grid[r][c] = '*' # Path marker
 
         # Output generation
         output = "Running Pathfinding Visualization...\n\n"
         output += "Map Visualization (S=Start, E=End, #=Wall, *=Path):\n"
         for row in grid:
-            output += "".join(row) + "\n"
+            # Replace characters for better visuals if needed, or keep simple
+            line = "".join(row)
+            output += line + "\n"
             
         if found:
             output += f"\nPath found! Length: {len(path_taken)} steps."
