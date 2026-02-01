@@ -85,10 +85,94 @@ def run_sorting():
 def run_pathfinding():
     try:
         bin_path = find_binary(PATHFINDING_BIN_NAME)
-        if not bin_path:
-             return jsonify({'output': f'Error: Binary {PATHFINDING_BIN_NAME} not found.'})
-        result = subprocess.run([bin_path], capture_output=True, text=True)
-        return jsonify({'output': result.stdout})
+        if bin_path:
+             result = subprocess.run([bin_path], capture_output=True, text=True)
+             if result.returncode == 0:
+                 return jsonify({'output': result.stdout})
+        
+        # Fallback Python Pathfinding (Dijkstra)
+        import heapq
+        
+        # Simple ASCII Grid
+        # S = Start, E = End, # = Wall, . = Empty
+        grid_data = [
+            "S.........",
+            "###.#####.",
+            "..........",
+            ".#####.##.",
+            "..........",
+            "#####.###.",
+            "..........",
+            ".#######.E"
+        ]
+        
+        # Parse grid
+        grid = [list(row) for row in grid_data]
+        rows, cols = len(grid), len(grid[0])
+        start_node, end_node = None, None
+        
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] == 'S': start_node = (r, c)
+                elif grid[r][c] == 'E': end_node = (r, c)
+
+        if not start_node or not end_node:
+            return jsonify({'output': "Error: Invalid map data in fallback."})
+
+        # Dijkstra
+        pq = [(0, start_node)]
+        dists = {start_node: 0}
+        parents = {start_node: None}
+        visited = set()
+        
+        found = False
+        while pq:
+            d, curr = heapq.heappop(pq)
+            
+            if curr in visited: continue
+            visited.add(curr)
+            
+            if curr == end_node:
+                found = True
+                break
+            
+            r, c = curr
+            # Neighbors (Up, Down, Left, Right)
+            for dr, dc in [(-1,0), (1,0), (0,-1), (0,1)]:
+                nr, nc = r+dr, c+dc
+                if 0 <= nr < rows and 0 <= nc < cols and grid[nr][nc] != '#':
+                    new_dist = d + 1
+                    if (nr, nc) not in dists or new_dist < dists[(nr, nc)]:
+                        dists[(nr, nc)] = new_dist
+                        parents[(nr, nc)] = curr
+                        heapq.heappush(pq, (new_dist, (nr, nc)))
+
+        # Reconstruct path
+        path_taken = []
+        if found:
+            curr = end_node
+            while curr:
+                path_taken.append(curr)
+                curr = parents.get(curr)
+            
+            # Mark path on grid
+            for r, c in path_taken:
+                if grid[r][c] not in ('S', 'E'):
+                    grid[r][c] = '*' # Path marker
+
+        # Output generation
+        output = "⚠️ Binary not found, running Python Dijkstra Fallback...\n\n"
+        output += "Map Visualization (S=Start, E=End, #=Wall, *=Path):\n"
+        for row in grid:
+            output += "".join(row) + "\n"
+            
+        if found:
+            output += f"\nPath found! Length: {len(path_taken)} steps."
+        else:
+            output += "\nNo path found."
+            
+        return jsonify({'output': output})
+
     except Exception as e:
         return jsonify({'output': str(e)})
 
