@@ -9,8 +9,6 @@ This repository contains detailed comparative analyses of various algorithms. It
 3- Sorting Algorithms Comparison - Benchmark of QuickSort, MergeSort, and HeapSort with performance visualization.
 4- Pathfinding Visualization - Interactive CLI visualizer for Dijkstra and A* algorithms.
 
-![Solved 50+ LeetCode Problems](https://img.shields.io/badge/Solved-50%2B%20LeetCode%20Problems-orange?style=for-the-badge&logo=leetcode)
-
 ## Repository Structure
 
 ### [Sorting_Algorithms_Comparison/](Sorting_Algorithms_Comparison/)
