@@ -16,7 +16,7 @@ Contains implementations of various sorting algorithms and a benchmarking tool.
 - **Algorithms**: QuickSort, MergeSort, HeapSort, std::sort
 - **Benchmark**: Compares execution time for N=10k and N=100k elements.
 
-![Sorting Benchmark Results](sorting_benchmark_results.svg)
+![Sorting Benchmark Results](assets/sorting_benchmark_results.svg)
 
 ### [Pathfinding_Visualization/](Pathfinding_Visualization/)
 A CLI-based visualization of pathfinding algorithms on a grid map.

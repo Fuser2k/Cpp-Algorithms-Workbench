@@ -41,3 +41,8 @@ venv/
 # Binaries created by this project
 Sorting_Algorithms_Comparison/sorting_benchmark
 Pathfinding_Visualization/pathfinder
+
+# Logs
+*.log
+worker_logs.txt
+worker_logs_full.txt
